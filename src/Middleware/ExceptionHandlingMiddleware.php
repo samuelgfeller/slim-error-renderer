@@ -3,7 +3,9 @@
 namespace SlimErrorRenderer\Middleware;
 
 use DomainException;
+use ErrorException;
 use InvalidArgumentException;
+use PDOException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -75,7 +77,7 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
         // That middleware already logged the message, so it doesn't have to be done here.
         // The reason it is logged there is that if displayErrorDetails is false, ErrorException is not
         // thrown and the warnings and notices still have to be logged in prod.
-        if (isset($this->logger) && !$exception instanceof \ErrorException) {
+        if (isset($this->logger) && !$exception instanceof ErrorException) {
             // Error with no stack trace https://stackoverflow.com/a/2520056/9013718
             $this->logger->error(
                 sprintf(
@@ -93,7 +95,7 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
         if (PHP_SAPI === 'cli') {
             // If the column is not found and the request is coming from the command line, it probably means
             // that the database schema.sql was not updated after a change.
-            if ($exception instanceof \PDOException && str_contains($exception->getMessage(), 'Column not found')) {
+            if ($exception instanceof PDOException && str_contains($exception->getMessage(), 'Column not found')) {
                 echo "Column not existing. If you're using samuelgfeller/test-traits, try running 
                 `composer schema:generate` in the console and run tests again. \n";
             }
@@ -121,7 +123,11 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
 
         // Render html details page
         if ($this->displayErrorDetails === true) {
-            $errorPageHtml = $this->errorDetailsPageRenderer->renderHtmlDetailsPage($exception, $this->statusCode, $this->reasonPhrase);
+            $errorPageHtml = $this->errorDetailsPageRenderer->renderHtmlDetailsPage(
+                $exception,
+                $this->statusCode,
+                $this->reasonPhrase
+            );
 
             $response->getBody()->write($errorPageHtml);
 

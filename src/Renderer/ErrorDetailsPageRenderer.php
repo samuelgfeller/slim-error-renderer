@@ -2,6 +2,7 @@
 
 namespace SlimErrorRenderer\Renderer;
 
+use ErrorException;
 use SlimErrorRenderer\Interfaces\ErrorDetailsPageRendererInterface;
 use Throwable;
 
@@ -26,7 +27,7 @@ final class ErrorDetailsPageRenderer implements ErrorDetailsPageRendererInterfac
         $exceptionMessage = $exception->getMessage();
 
         // If the exception is ErrorException, the css class is warning, otherwise it's error
-        $severityCssClassName = $exception instanceof \ErrorException ? 'warning' : 'error';
+        $severityCssClassName = $exception instanceof ErrorException ? 'warning' : 'error';
 
         // Remove the filesystem path and make the path to the file that had the error smaller to increase readability
         $lastBackslash = strrpos($file, '\\');
@@ -157,17 +158,20 @@ HTML;
         foreach ($traceEntries as $key => $entry) {
             $traceContent .= '<tr>
         <td class="' . $this->html($entry['nonVendorClass']) . '">' . $key . '</td>
-        <td class="function-td ' . $this->html($entry['nonVendorFunctionCallClass']) . '">' . $this->html($entry['classAndFunction']) . '(';
+        <td class="function-td ' . $this->html($entry['nonVendorFunctionCallClass']) . '">' .
+                $this->html($entry['classAndFunction']) . '(';
             // Function parameters
             foreach ($entry['args'] as $argument) {
                 // Parameter is expanded on click
-                $traceContent .= '<span class="args-span" data-full-details="' . $this->html($argument['detailed']) . '">' .
+                $traceContent .= '<span class="args-span" data-full-details="' .
+                    $this->html($argument['detailed']) . '">' .
                     $this->html($argument['truncated']) . '</span>,';
             }
             // Close trace class and function and add file name and line number
             $traceContent .= ')
         </td>
-        <td class="stack-trace-file-name ' . $this->html($entry['nonVendorClass']) . '">' . $this->html($entry['fileName']) .
+        <td class="stack-trace-file-name ' . $this->html($entry['nonVendorClass']) . '">' .
+                $this->html($entry['fileName']) .
                 ':<span class="lineSpan">' . $this->html($entry['line']) . '</span>
         </td>
     </tr>';
@@ -219,7 +223,7 @@ HTML;
      * Convert the given argument to a string not longer than 15 chars
      * except if it's a file or a class name.
      *
-     * @param mixed $argument the variable to be converted to a string
+     * @param mixed $argument The variable to be converted to a string
      *
      * @return string the string representation of the variable
      */
@@ -495,9 +499,11 @@ function camelWrapUnicode(node) {
     for (node = node.firstChild; node; node = node.nextSibling) {
         // If the current node is a text node, replace its value.
         if (node.nodeType === Node.TEXT_NODE) {
-            // Replace the node's value with a new string where a zero-width space has been inserted before each uppercase letter.
-            // This is done by first matching any word character or colon that is repeated 18 or more times, and for each match,
-            // a new string is returned where a zero-width space has been inserted before each uppercase letter.
+            // Replace the node's value with a new string where a zero-width space has been inserted before each 
+            // uppercase letter.
+            // This is done by first matching any word character or colon that is repeated 18 or more times, 
+            // and for each match, a new string is returned where a zero-width space has been inserted before 
+            // each uppercase letter.
             // The same is done by matching any dot character, but without the repetition requirement.
             node.nodeValue = node.nodeValue.replace(/[\w:]{18,}/g, function (str) {
                 return str.replace(/([a-z])([A-Z])/g, "$1\u200B$2");

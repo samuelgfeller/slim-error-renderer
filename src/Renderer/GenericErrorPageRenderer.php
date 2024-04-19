@@ -9,9 +9,9 @@ final readonly class GenericErrorPageRenderer implements GenericErrorPageRendere
     /**
      * Render prod error page.
      *
-     * @param int $statusCode http status code
-     * @param string|null $safeExceptionMessage exception message that doesn't contains sensitive information
-     * @param string|null $errorReportEmailAddress email address to report errors to
+     * @param int $statusCode Http status code
+     * @param string|null $safeExceptionMessage Exception message that doesn't contain sensitive information
+     * @param string|null $errorReportEmailAddress Email address to report errors to
      *
      * @return string
      */
@@ -23,7 +23,8 @@ final readonly class GenericErrorPageRenderer implements GenericErrorPageRendere
         switch ($statusCode) {
             case 404:
                 $title = 'Page not found';
-                $htmlGenericErrorMessage = "Looks like you've ventured into uncharted territory. Please report the issue!";
+                $htmlGenericErrorMessage = "Looks like you've ventured into uncharted territory. 
+                Please report the issue!";
                 break;
             case 403:
                 $title = 'Access forbidden';
@@ -37,7 +38,8 @@ final readonly class GenericErrorPageRenderer implements GenericErrorPageRendere
                 break;
             case 422:
                 $title = 'Validation failed.';
-                $htmlGenericErrorMessage = 'The server could not interpret the data it received. Please try again with valid data and
+                $htmlGenericErrorMessage = 'The server could not interpret the data it received. Please try 
+                again with valid data and
                         report the issue if it persists.';
                 break;
             case 500:
@@ -58,7 +60,8 @@ final readonly class GenericErrorPageRenderer implements GenericErrorPageRendere
                 strip_tags(str_replace('"', '', $safeExceptionMessage)) : $statusCode . ' ' . $title;
             $emailBody = "This is what I did before the error happened:\n";
             $htmlReportIssueBtn = <<<HTML
-<a href="mailto:$errorReportEmailAddress?subject=$emailSubject&body=$emailBody" target="_blank" class="btn">Report the issue</a>
+<a href="mailto:$errorReportEmailAddress?subject=$emailSubject&body=$emailBody" target="_blank" 
+class="btn">Report the issue</a>
 HTML;
         }
 
@@ -156,7 +159,8 @@ HTML;
 
 @media (min-width: 100px) {
     body {
-        background: linear-gradient(to bottom right, var(--error-body-gradient-color-1) 0%, var(--error-body-gradient-color-2) 100%);
+        background: linear-gradient(to bottom right, var(--error-body-gradient-color-1) 0%, 
+        var(--error-body-gradient-color-2) 100%);
         margin: 0;
         font-family: "Trebuchet MS", sans-serif;
     }

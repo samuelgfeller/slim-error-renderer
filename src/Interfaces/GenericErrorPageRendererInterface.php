@@ -13,5 +13,9 @@ interface GenericErrorPageRendererInterface
      *
      * @return string The error page in html
      */
-    public function renderHtmlProdErrorPage(int $statusCode, ?string $safeExceptionMessage, ?string $errorReportEmailAddress): string;
+    public function renderHtmlProdErrorPage(
+        int $statusCode,
+        ?string $safeExceptionMessage,
+        ?string $errorReportEmailAddress
+    ): string;
 }
