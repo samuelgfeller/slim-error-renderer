@@ -10,14 +10,15 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Handles non-fatal errors such as warnings and notices.
+ * Logs non-fatal errors such as warnings and notices and
+ * promotes them to exceptions if "display error details" is enabled.
+ *
  * Error handling documentation: https://github.com/samuelgfeller/slim-example-project/wiki/Error-Handling.
  */
 final readonly class NonFatalErrorHandlingMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private bool $displayErrorDetails,
-        private bool $logErrors,
         private ?LoggerInterface $logger
     ) {
     }
@@ -43,12 +44,12 @@ final readonly class NonFatalErrorHandlingMiddleware implements MiddlewareInterf
                 // '&' checks if a particular error level is included in the result of error_reporting().
                 if (error_reporting() & $severity) {
                     // Log non fatal errors if logging is enabled
-                    if ($this->logErrors) {
+                    if (isset($this->logger)) {
                         // If error is warning
                         if ($severity === E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING) {
-                            $this->logger?->warning("Warning [$severity] $message on line $line in file $file");
+                            $this->logger->warning("Warning [$severity] $message on line $line in file $file");
                         } else { // If error is non-fatal and is not a warning
-                            $this->logger?->notice("Notice [$severity] $message on line $line in file $file");
+                            $this->logger->notice("Notice [$severity] $message on line $line in file $file");
                         }
                     }
                     if ($this->displayErrorDetails === true) {

@@ -20,6 +20,9 @@ use SlimErrorRenderer\Renderer\GenericErrorPageRenderer;
 use Throwable;
 
 /**
+ * Exception handling middleware.
+ * Renders an error page with details or a generic error page.
+ *
  * Documentation: https://github.com/samuelgfeller/slim-example-project/wiki/Error-Handling.
  */
 final class ExceptionHandlingMiddleware implements MiddlewareInterface
