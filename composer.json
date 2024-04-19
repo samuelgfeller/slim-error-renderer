@@ -1,0 +1,29 @@
+{
+  "name": "samuelgfeller/slim-error-renderer",
+  "description": "Slim 4 error handling middleware and exception page renderer",
+  "type": "project",
+  "license": "MIT",
+  "keywords": [
+    "error",
+    "handler",
+    "renderer",
+    "slim"
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3"
+  },
+  "autoload": {
+    "psr-4": {
+      "SlimErrorRenderer\\": "src/"
+    }
+  },
+  "scripts": {
+    "stan": "phpstan analyse -c phpstan.neon --no-progress --ansi",
+    "cs:check": "php-cs-fixer fix --dry-run --format=txt --verbose --diff --config=.cs.php --ansi",
+    "cs:fix": "php-cs-fixer fix --config=.cs.php --ansi --verbose"
+  }
+}
