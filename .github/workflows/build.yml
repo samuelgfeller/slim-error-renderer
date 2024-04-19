@@ -1,4 +1,4 @@
-name: 🧪 Build test
+name: Build
 on:
   push:
     branches:

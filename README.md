@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/github/release/samuelgfeller/slim-error-renderer.svg)](https://packagist.org/packages/samuelgfeller/slim-error-renderer)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![Build Status](https://github.com/samuelgfeller/slim-error-renderer/workflows/build/badge.svg)](https://github.com/samuelgfeller/slim-error-renderer/actions)
+[![Build Status](https://github.com/samuelgfeller/slim-error-renderer/actions/workflows/build.yml/badge.svg)](https://github.com/samuelgfeller/slim-error-renderer/actions)
 [![Total Downloads](https://img.shields.io/packagist/dt/samuelgfeller/slim-error-renderer.svg)](https://packagist.org/packages/samuelgfeller/slim-error-renderer/stats)
 
 This package provides an alternative to the default Slim error handler and renderer.  
@@ -39,7 +39,7 @@ non-fatal errors, it made sense to put that in a separate small library.
 
 ## Requirements
 
-* PHP 8.0+
+* PHP 8.2+
 * Composer
 * A Slim 4 application
 
