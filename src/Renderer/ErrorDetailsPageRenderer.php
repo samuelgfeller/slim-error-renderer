@@ -8,7 +8,7 @@ use Throwable;
 
 final class ErrorDetailsPageRenderer implements ErrorDetailsPageRendererInterface
 {
-    // The filesystem path below will be removed from the file path in the error message
+    // The filesystem path to the project root folder is removed in the error details page
     private string $fileSystemPath = 'C:\xampp\htdocs\\';
 
     /**

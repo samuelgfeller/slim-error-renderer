@@ -53,8 +53,8 @@ final readonly class NonFatalErrorHandlingMiddleware implements MiddlewareInterf
                         }
                     }
                     if ($this->displayErrorDetails === true) {
-                        // Throw ErrorException to stop script execution and have access to more error details
-                        // Logging for fatal errors happens in DefaultErrorHandler.php
+                        // Throw ErrorException to stop script execution and show stack trace.
+                        // Logging for fatal errors happens in the exception handling middleware.
                         throw new ErrorException($message, 0, $severity, $file, $line);
                     }
                 }

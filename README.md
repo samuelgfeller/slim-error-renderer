@@ -54,6 +54,21 @@ Open a terminal in your project's root directory and run the following command:
 composer require samuelgfeller/slim-error-renderer
 ```
 
+### Configuration
+The following configuration values are required in the settings.
+[Modify accordingly](https://github.com/samuelgfeller/slim-example-project/wiki/Error-Handling#application-configuration) 
+in the development, production, and testing configuration files. 
+
+File: `config/defaults.php`
+```php
+$settings['error'] = [
+    // Must be set to false in production
+    'display_error_details' => false,
+    // Whether to log errors or not
+    'log_errors' => true,
+];
+```
+
 ### Add the error handling middleware to the Slim app
 
 #### Container instantiation
