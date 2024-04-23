@@ -111,8 +111,8 @@ HTML;
             $traceContent .= ')
         </td>
         <td class="stack-trace-file-name ' . $this->html($entry['nonVendorClass']) . '">' .
-                $this->html($entry['fileName']) .
-                ':<span class="lineSpan">' . $this->html($entry['line']) . '</span>
+                $this->html($entry['fileName']) . (!empty($entry['fileName']) ? ':' : '') .
+                '<span class="lineSpan">' . $this->html($entry['line']) . '</span>
         </td>
     </tr>';
         }
