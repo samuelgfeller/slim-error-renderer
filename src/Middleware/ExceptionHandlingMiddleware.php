@@ -17,6 +17,7 @@ use SlimErrorRenderer\Interfaces\ErrorDetailsPageRendererInterface;
 use SlimErrorRenderer\Interfaces\GenericErrorPageRendererInterface;
 use SlimErrorRenderer\Renderer\ErrorDetailsPageRenderer;
 use SlimErrorRenderer\Renderer\GenericErrorPageRenderer;
+use SlimErrorRenderer\Renderer\JsonErrorRenderer;
 use Throwable;
 
 /**
@@ -121,7 +122,13 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
 
         // If the request is JSON, return a JSON response with the error details
         if (str_contains($request->getHeaderLine('Accept'), 'application/json')) {
-            return $this->renderJson($exception, $response);
+            return (new JsonErrorRenderer())->renderJsonErrorResponse(
+                $exception,
+                $response,
+                $this->displayErrorDetails,
+                $this->statusCode,
+                $this->reasonPhrase
+            );
         }
 
         // Render html details page
@@ -149,34 +156,6 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
         );
 
         $response->getBody()->write($errorPageHtml);
-
-        return $response;
-    }
-
-    public function renderJson(Throwable $exception, ResponseInterface $response): ResponseInterface
-    {
-        $response = $response->withHeader('Content-Type', 'application/json');
-
-        $jsonErrorResponse = [
-            'status' => $this->statusCode,
-            // If it's a HttpException it's safe to show the error message to the user otherwise show reason phrase
-            'message' => $exception instanceof HttpException ? $exception->getMessage() : $this->reasonPhrase,
-        ];
-
-        // If $displayErrorDetails is true, add exception details to json response
-        if ($this->displayErrorDetails === true) {
-            $jsonErrorResponse['error'] = $exception->getMessage();
-            /*$jsonErrorResponse['details'] = [
-                'file' => $exception->getFile(),
-                'line' => $exception->getLine(),
-                'trace' => $exception->getTrace(),
-            ];*/
-        }
-
-        // Encode and add to response
-        $response->getBody()->write(
-            (string)json_encode($jsonErrorResponse, JSON_UNESCAPED_SLASHES | JSON_PARTIAL_OUTPUT_ON_ERROR)
-        );
 
         return $response;
     }
