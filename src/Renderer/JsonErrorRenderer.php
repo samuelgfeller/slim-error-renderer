@@ -59,7 +59,7 @@ class JsonErrorRenderer
             }, $entry['args']);
             $truncatedArgsString = implode(', ', $truncatedArgs);
             $isNotVendor = $entry['nonVendorClass'] === 'non-vendor';
-            $traceJson[$key] = "#$key " . $isNotVendor ? '(src) ' : '(vendor) ' . $entry['classAndFunction'] .
+            $traceJson[$key] = "#$key " . ($isNotVendor ? '(src) ' : '(vendor) ') . $entry['classAndFunction'] .
                 '(' . $truncatedArgsString . ') called in (file)' . $entry['fileName'] . ':' . $entry['line'] . ']';
         }
 
