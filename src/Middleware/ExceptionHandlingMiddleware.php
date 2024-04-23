@@ -28,9 +28,6 @@ use Throwable;
  */
 final class ExceptionHandlingMiddleware implements MiddlewareInterface
 {
-    private int $statusCode = 500;
-    private string $reasonPhrase = 'Internal Server Error';
-
     /**
      * @param ResponseFactoryInterface $responseFactory
      * @param LoggerInterface|null $logger
@@ -115,19 +112,22 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
         }
 
         // Detect status code
-        $this->statusCode = $this->getHttpStatusCode($exception);
-        $response = $response->withStatus($this->statusCode);
+        $statusCode = $this->getHttpStatusCode($exception);
+        $response = $response->withStatus($statusCode);
         // Reason phrase is the text that describes the status code e.g. 404 => Not found
-        $this->reasonPhrase = $response->getReasonPhrase();
+        $reasonPhrase = $response->getReasonPhrase();
 
         // If the request is JSON, return a JSON response with the error details
-        if (str_contains($request->getHeaderLine('Accept'), 'application/json')) {
+        if (
+            str_contains($request->getHeaderLine('Accept'), 'application/json')
+            || str_contains($request->getHeaderLine('Content-Type'), 'application/json')
+        ) {
             return (new JsonErrorRenderer())->renderJsonErrorResponse(
                 $exception,
                 $response,
                 $this->displayErrorDetails,
-                $this->statusCode,
-                $this->reasonPhrase
+                $statusCode,
+                $reasonPhrase
             );
         }
 
@@ -135,8 +135,8 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
         if ($this->displayErrorDetails === true) {
             $errorPageHtml = $this->errorDetailsPageRenderer->renderHtmlDetailsPage(
                 $exception,
-                $this->statusCode,
-                $this->reasonPhrase
+                $statusCode,
+                $reasonPhrase
             );
 
             $response->getBody()->write($errorPageHtml);
@@ -150,7 +150,7 @@ final class ExceptionHandlingMiddleware implements MiddlewareInterface
         // Render error section without layout
 
         $errorPageHtml = $this->prodPageRenderer->renderHtmlProdErrorPage(
-            $this->statusCode,
+            $statusCode,
             $safeExceptionMessage,
             $this->errorReportEmailAddress
         );

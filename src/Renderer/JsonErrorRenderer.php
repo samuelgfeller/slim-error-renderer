@@ -28,7 +28,7 @@ class JsonErrorRenderer
             $errorFormatter = new ErrorDetailsFormatter($exception);
             [$pathToMainErrorFile, $mainErrorFileName] = $errorFormatter->getShortenedFilePathAndName();
             $jsonErrorResponse['error'] = $exception->getMessage();
-            $jsonErrorResponse['file'] = $pathToMainErrorFile . '\\' . $mainErrorFileName;
+            $jsonErrorResponse['file'] = $pathToMainErrorFile . $mainErrorFileName;
             $jsonErrorResponse['line'] = $exception->getLine();
             $jsonErrorResponse['trace'] =
                 $this->getTraceEntriesJsonArray($errorFormatter->getFormattedStackTraceArray());
@@ -60,7 +60,7 @@ class JsonErrorRenderer
             $truncatedArgsString = implode(', ', $truncatedArgs);
             $isNotVendor = $entry['nonVendorClass'] === 'non-vendor';
             $traceJson[$key] = "#$key " . $isNotVendor ? '(src) ' : '(vendor) ' . $entry['classAndFunction'] .
-                '(' . $truncatedArgsString . ') called at [' . $entry['fileName'] . ':' . $entry['line'] . ']';
+                '(' . $truncatedArgsString . ') called in (file)' . $entry['fileName'] . ':' . $entry['line'] . ']';
         }
 
         return $traceJson;

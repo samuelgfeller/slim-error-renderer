@@ -55,7 +55,7 @@ final class ErrorDetailsFormatter
             // remove everything from class before last \
             $classWithoutPath = $this->removeEverythingBeforeLastBackslash($t['class']);
             // if the file path doesn't contain "vendor", a css class is added to highlight it
-            $nonVendorFileClass = !str_contains($t['file'], 'vendor') ? 'non-vendor' : '';
+            $nonVendorFileClass = !empty($t['file']) && !str_contains($t['file'], 'vendor') ? 'non-vendor' : '';
             // if file and class path don't contain vendor, add "non-vendor" css class to add highlight on class
             $classIsVendor = str_contains($t['class'], 'vendor');
             $nonVendorFunctionCallClass = !empty($nonVendorFileClass) && !$classIsVendor ? 'non-vendor' : '';
