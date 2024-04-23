@@ -6,8 +6,8 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/samuelgfeller/slim-error-renderer.svg)](https://packagist.org/packages/samuelgfeller/slim-error-renderer/stats)
 
 This package provides an alternative to the default Slim error handler and renderer.  
-It renders a styled [error details page](#error-details-design) with the stack trace and the error message
-or a [generic error page](#generic-error-page-design) for production.
+It renders a styled error details page with the stack trace and the error message
+or a generic error page for production.
 
 Custom error page renderers can be created to change the design of the error pages
 by implementing the `ErrorDetailsPageRendererInterface`
@@ -17,26 +17,11 @@ It also provides a [middleware](#exception-heavy-middleware) to make the project
 which means that it will throw exceptions with a stack trace for notices and warnings during
 development and testing like other frameworks such as Laravel or Symfony.
 
-## Why use this package?
+## Preview
 
-A reason this small library exists instead of using the default Slim error handler and a [custom
-error renderer](https://www.slimframework.com/docs/v4/middleware/error-handling.html#error-handlingrendering),
-is to provide the "exception-heavy" feature and better-looking error pages.  
-But these things can be achieved with a custom error renderer and middleware located in the project as well.
-
-The issue with the default `Slim\Handlers\ErrorHandler` is that while testing, the
-`$contentType` in the error handler is `null` and instead of using any custom error renderer
-its hardcoded to use the `Slim\Error\Renderers\HtmlErrorRenderer`. This has two consequences:
-
-1. The error is not thrown while integration testing, which means debugging is harder.
-2. Tests where an exception is expected, fail with the
-   [PHPUnit 11 warning](tps://github.com/sebastianbergmann/phpunit/pull/5619)
-   `Test code or tested code did not remove its own error handlers`.
-   A fix for this message is calling `restore_error_handler()` but this can't be done as the error handler doesn't
-   allow for custom error renderers when testing.
-
-So a custom handler is required anyway, and with the custom renderers and the handling of
-non-fatal errors, it made sense to put that in a separate small library.
+| Exception                                                                                                             | Warning and Notice                                                                                                     | Generic error page                                                                                                     |
+|-----------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://github.com/samuelgfeller/slim-error-renderer/assets/31797204/ef88013f-841f-417b-8626-6c1fc4d38a8b"> | <img src="https://github.com/samuelgfeller/slim-example-project/assets/31797204/9c2e3d7c-6752-4854-b535-5e54d25fd11e"> | <img src="https://github.com/samuelgfeller/slim-example-project/assets/31797204/d1fd052e-a16f-4a76-895a-2eac456c4a79"> |
 
 ## Requirements
 
@@ -55,11 +40,14 @@ composer require samuelgfeller/slim-error-renderer
 ```
 
 ### Configuration
+
 The following configuration values are required in the settings.
-[Modify accordingly](https://github.com/samuelgfeller/slim-example-project/wiki/Error-Handling#application-configuration) 
-in the development, production, and testing configuration files. 
+Modify accordingly
+in the development, production, and testing 
+[configuration files](https://github.com/samuelgfeller/slim-example-project/wiki/Error-Handling#application-configuration).
 
 File: `config/defaults.php`
+
 ```php
 $settings['error'] = [
     // Must be set to false in production
@@ -206,16 +194,23 @@ implementation of this package and the
 [`slim-example-project`](https://github.com/samuelgfeller/slim-example-project) for a custom
 generic error page rendering with layout.
 
-## Error details design
+## Why use this package?
 
-### Fatal error
+A reason this small library exists instead of using the default Slim error handler and a [custom
+error renderer](https://www.slimframework.com/docs/v4/middleware/error-handling.html#error-handlingrendering),
+is to provide the "exception-heavy" feature and better-looking error pages.  
+But these things can be achieved with a custom error renderer and middleware located in the project as well.
 
-<img src="https://github.com/samuelgfeller/slim-example-project/assets/31797204/fea0abee-17f6-46dd-9efa-c5928244f7b6" width="600">
+The issue with the default `Slim\Handlers\ErrorHandler` is that while testing, the
+`$contentType` in the error handler is `null` and instead of using any custom error renderer
+its hardcoded to use the `Slim\Error\Renderers\HtmlErrorRenderer`. This has two consequences:
 
-### Warning / Notice
+1. The error is not thrown while integration testing, which means debugging is harder.
+2. Tests where an exception is expected, fail with the
+   [PHPUnit 11 warning](tps://github.com/sebastianbergmann/phpunit/pull/5619)
+   `Test code or tested code did not remove its own error handlers`.
+   A fix for this message is calling `restore_error_handler()` but this can't be done as the error handler doesn't
+   allow for custom error renderers when testing.
 
-<img src="https://github.com/samuelgfeller/slim-example-project/assets/31797204/9c2e3d7c-6752-4854-b535-5e54d25fd11e" width="600">
-
-## Generic error page design
-
-<img src="https://github.com/samuelgfeller/slim-example-project/assets/31797204/d1fd052e-a16f-4a76-895a-2eac456c4a79" width="600">
+So a custom handler is required anyway, and with the custom renderers and the handling of
+non-fatal errors, it made sense to put that in a separate small library.
