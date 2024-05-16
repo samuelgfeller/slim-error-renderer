@@ -192,7 +192,7 @@ return function (App $app) {
 Have a look a the [`slim-starter`](https://github.com/samuelgfeller/slim-starter) for a default
 implementation of this package and the
 [`slim-example-project`](https://github.com/samuelgfeller/slim-example-project) for a custom
-generic error page rendering with layout.
+prod error page with layout.
 
 ## Why use this package?
 
@@ -214,3 +214,8 @@ its hardcoded to use the `Slim\Error\Renderers\HtmlErrorRenderer`. This has two 
 
 So a custom handler is required anyway, and with the custom renderers and the handling of
 non-fatal errors, it made sense to put that in a separate small library.
+
+## License
+
+This project is licensed under the MIT license — see the
+[LICENSE](LICENSE) file for details.
