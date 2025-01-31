@@ -13,7 +13,7 @@ class JsonErrorRenderer
         ResponseInterface $response,
         bool $displayErrorDetails = false,
         int $statusCode = 500,
-        string $reasonPhrase = 'Internal Server Error'
+        string $reasonPhrase = 'Internal Server Error',
     ): ResponseInterface {
         $response = $response->withHeader('Content-Type', 'application/json');
 

@@ -18,7 +18,7 @@ final readonly class GenericErrorPageRenderer implements GenericErrorPageRendere
     public function renderHtmlProdErrorPage(
         int $statusCode,
         ?string $safeExceptionMessage = null,
-        ?string $errorReportEmailAddress = null
+        ?string $errorReportEmailAddress = null,
     ): string {
         switch ($statusCode) {
             case 404:

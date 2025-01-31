@@ -16,6 +16,6 @@ interface GenericErrorPageRendererInterface
     public function renderHtmlProdErrorPage(
         int $statusCode,
         ?string $safeExceptionMessage,
-        ?string $errorReportEmailAddress
+        ?string $errorReportEmailAddress,
     ): string;
 }

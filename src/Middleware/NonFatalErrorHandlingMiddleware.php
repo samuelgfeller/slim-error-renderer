@@ -19,7 +19,7 @@ final readonly class NonFatalErrorHandlingMiddleware implements MiddlewareInterf
 {
     public function __construct(
         private bool $displayErrorDetails,
-        private ?LoggerInterface $logger
+        private ?LoggerInterface $logger,
     ) {
     }
 
